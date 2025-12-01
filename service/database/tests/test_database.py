@@ -3,12 +3,13 @@ import sys
 import os
 from pathlib import Path
 
-# Füge das Projekt-Root zum Python-Pfad hinzu
-project_root = Path(__file__).parent.parent
+# Gehe 3 Ebenen hoch zum Projekt-Root
+project_root = Path(__file__).parent.parent.parent.parent  # Von tests/ hoch zum AudiobookManager/
 sys.path.insert(0, str(project_root))
 
 print(f"Projekt Root: {project_root}")
-print(f"Python Pfad: {sys.path[:3]}...")
+print(f"Python Pfad erstes Element: {sys.path[0]}")
+print(f"Aktuelles Verzeichnis: {os.getcwd()}")
 
 try:
     from service.database.database_manager import DatabaseManager
@@ -64,16 +65,13 @@ try:
     
 except ImportError as e:
     print(f"❌ Import fehlgeschlagen: {e}")
-    print("\nÜberprüfe die Ordnerstruktur:")
     
-    # Aktuelle Struktur anzeigen
-    current_dir = Path(__file__).parent.parent
-    print(f"\nAktuelle Struktur in {current_dir}:")
-    for root, dirs, files in os.walk(current_dir):
-        level = root.replace(str(current_dir), '').count(os.sep)
-        indent = ' ' * 2 * level
-        print(f"{indent}{os.path.basename(root)}/")
-        subindent = ' ' * 2 * (level + 1)
-        for file in files:
-            if file.endswith('.py'):
-                print(f"{subindent}{file}")
+    # Debug: Zeige verfügbare Module
+    print("\nVerfügbare Module in service/:")
+    service_path = project_root / "service"
+    if service_path.exists():
+        for item in service_path.iterdir():
+            if item.is_dir():
+                print(f"  📁 {item.name}/")
+            elif item.name.endswith('.py'):
+                print(f"  📄 {item.name}")
