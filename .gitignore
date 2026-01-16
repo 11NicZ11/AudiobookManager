@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.db
+*.sqlite3
+
+# Test files
+test_*.db
+*.test.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
